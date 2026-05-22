@@ -1,0 +1,15 @@
+array a[10];
+int i, s;
+
+s = 10;
+while (i < s) {
+    input(a[i]);
+    i = i + 1;
+}
+
+i = 0;
+while (i < s) {
+    output(a[i]);
+    i = i + 1;
+}
+$
