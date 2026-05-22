@@ -1,0 +1,32 @@
+array a[5];
+int i, n, minIdx, j, tmp;
+
+n = 5;
+while (i < n) {
+    input(a[i]);
+    i = i + 1;
+}
+
+i = 0;
+while (i < n - 1) {
+    minIdx = i;
+    j = i + 1;
+    while (j < n) {
+        if (a[j] < a[minIdx]) {
+            minIdx = j;
+        }
+        j = j + 1;
+    }
+
+    tmp = a[i];
+    a[i] = a[minIdx];
+    a[minIdx] = tmp;
+    i = i + 1;
+}
+
+i = 0;
+while (i < n) {
+    output(a[i]);
+    i = i + 1;
+}
+$
