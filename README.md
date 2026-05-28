@@ -111,8 +111,8 @@
 2. `int idx;`.
 3. `idx = 0;`.
 4. `while (10) {`.
-5. `     increasing[idx] = idx + 1;`.
-6. `     idx = idx + 1;`.
+5. `	increasing[idx] = idx + 1;`.
+6. `	idx = idx + 1;`.
 7. `}`.
 8. `output(increasing);`.
 
@@ -131,7 +131,7 @@
 2. `input(predicate);`.
 3. `answer = 0;`.
 4. `if (predicate) {`.
-5. `     input(answer);`.
+5. `	input(answer);`.
 6. `}`.
 7. `answer = answer * 2;`.
 8. `output(answer);`.
