@@ -736,7 +736,12 @@ public final class Parser {
 	}
 	
 	private void error(final String message) {
-		if (!Main.hadError) Main.report(message);
+		if (Main.hadError) return;
+		if (tokens.isEmpty()) Main.report(1, 1, message);
+		else {
+			final Token token = peek();
+			Main.report(token.line(), token.column(), message);
+		}
 	}
 	
 	private boolean isValid(final int column, final int row) {
