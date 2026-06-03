@@ -49,6 +49,11 @@ public final class Main {
 		hadError = true;
 	}
 	
+	public static void report(final int line, final int column, final String message) {
+		System.err.printf("Error at line %d, column %d: %s%n", line, column, message);
+		hadError = true;
+	}
+	
 	public static void main(String[] args) throws IOException {
 		final Path path = Path.of("tests", "test_1.txt");
 		runFile(path);

@@ -13,6 +13,10 @@ public final class Scanner {
 	private final List<Token> tokens;
 	private int start;
 	private int current;
+	private int line;
+	private int column;
+	private int startLine;
+	private int startColumn;
 	private static final Map<String, TokenType> keywords;
 	private static final Map<Character, Optional<TokenType>> dictionary;
 
@@ -49,6 +53,10 @@ public final class Scanner {
 		this.source = source;
 		this.start = 0;
 		this.current = 0;
+		this.line = 1;
+		this.column = 1;
+		this.startLine = 1;
+		this.startColumn = 1;
 		this.tokens = new ArrayList<>();
 	}
 	
@@ -56,6 +64,8 @@ public final class Scanner {
 		while (!isAtEnd()) {
 			if (Main.hadError) break;
 			start = current;
+			startLine = line;
+			startColumn = column;
 			scanToken();
 		}
 		
@@ -74,7 +84,7 @@ public final class Scanner {
 		
 		if (isDigit(c)) number();
 		else if (isAlpha(c)) identifier();
-			else Main.report("An unexpected character: %s.".formatted(c));
+			else Main.report(startLine, startColumn, "An unexpected character: %s.".formatted(c));
 	}
 	
 	/* Reads the identifier token */
@@ -122,7 +132,13 @@ public final class Scanner {
 	/* Advancing along the sequence
 	@returns the current char */
 	private char advance() {
-		return source.charAt(current++);
+		final char c = source.charAt(current++);
+		if (c == '\n') {
+			line++;
+			column = 1;
+		} else column++;
+
+		return c;
 	}
 	
 	private void addToken(final TokenType type) {
@@ -131,7 +147,7 @@ public final class Scanner {
 	
 	private void addToken(final TokenType type, final Object literal) {
 		String text = source.substring(start, current);
-		tokens.add(new Token(type, text, literal));
+		tokens.add(new Token(type, text, literal, startLine, startColumn));
 	}
 	
 	/* Checks if it is the end of a sequence
