@@ -3,7 +3,7 @@ package tsu.mk;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.List;
 
 import tsu.mk.interpretation.Interpreter;
@@ -16,8 +16,8 @@ import tsu.mk.syntax.Parser;
 public final class Main {
 	public static boolean hadError = false;
 	
-	private static void runFile(final String path) throws IOException {
-		final byte[] bytes = Files.readAllBytes(Paths.get(path));
+	private static void runFile(final Path path) throws IOException {
+		final byte[] bytes = Files.readAllBytes(path);
 		run(new String(bytes, Charset.defaultCharset()));
 		
 		if (hadError) System.exit(1);
@@ -50,7 +50,7 @@ public final class Main {
 	}
 	
 	public static void main(String[] args) throws IOException {
-		final String path = "..../tests/test_1.txt"; //test_2.txt
+		final Path path = Path.of("tests", "test_1.txt");
 		runFile(path);
 	}
 }
