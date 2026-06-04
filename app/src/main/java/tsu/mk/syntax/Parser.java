@@ -122,7 +122,7 @@ public final class Parser {
 		programs.put(GeneratorEntry.ARRAY_NAME, token -> {
 			name(token.lexeme());
 		});
-		programs.put(GeneratorEntry.ARRAY_SIZE, token -> array(token.literal()));
+		programs.put(GeneratorEntry.ARRAY_SIZE, token -> createArray());
 		programs.put(GeneratorEntry.START, token -> start());
 		programs.put(GeneratorEntry.CONDITIONAL_JUMP, token -> conditionalJump());
 		programs.put(GeneratorEntry.UNCONDITIONAL_JUMP, token -> unconditionalJump());
@@ -265,6 +265,24 @@ public final class Parser {
 		for (int column = 0; column < NUM_COLUMNS; column++)
 			table[q][column] = TableEntry.lambda();
 		sharedRules(q);
+
+		table[q][columns.get(TokenType.ARRAY)] = new TableEntry(
+				new String[]{"array", "A", "Q"},
+				new GeneratorEntry[]{
+					GeneratorEntry.EMPTY,
+					GeneratorEntry.EMPTY,
+					GeneratorEntry.EMPTY
+				}
+		);
+
+		table[q][columns.get(TokenType.INT_TYPE)] = new TableEntry(
+				new String[]{"int", "I", "Q"},
+				new GeneratorEntry[]{
+					GeneratorEntry.EMPTY,
+					GeneratorEntry.EMPTY,
+					GeneratorEntry.EMPTY
+				}
+		);
 	}
 
 	private void i() {
@@ -298,12 +316,12 @@ public final class Parser {
 		final int a = rows.get("A");
 
 		table[a][columns.get(TokenType.IDENTIFIER)] = new TableEntry(
-				new String[]{"a", "[", "k", "]", "N"},
+				new String[]{"a", "[", "S", "]", "N"},
 				new GeneratorEntry[]{
 					GeneratorEntry.ARRAY_NAME,
 					GeneratorEntry.EMPTY,
-					GeneratorEntry.ARRAY_SIZE,
 					GeneratorEntry.EMPTY,
+					GeneratorEntry.ARRAY_SIZE,
 					GeneratorEntry.EMPTY
 				}
 		);
@@ -313,13 +331,13 @@ public final class Parser {
 		final int n = rows.get("N");
 
 		table[n][columns.get(TokenType.COMMA)] = new TableEntry(
-				new String[]{",", "a", "[", "k", "]", "N"},
+				new String[]{",", "a", "[", "S", "]", "N"},
 				new GeneratorEntry[]{
 					GeneratorEntry.EMPTY,
 					GeneratorEntry.ARRAY_NAME,
 					GeneratorEntry.EMPTY,
-					GeneratorEntry.ARRAY_SIZE,
 					GeneratorEntry.EMPTY,
+					GeneratorEntry.ARRAY_SIZE,
 					GeneratorEntry.EMPTY
 				}
 		);
@@ -729,11 +747,8 @@ public final class Parser {
 		addOperand(new Variable(lexeme));
 	}
 
-	/* Represents the program #3
-	@param literal an array size constant */
-	private void array(final Object literal) {
-		final int size = (int) literal;
-		addOperand(new Literal(size));
+	/* Represents the program #3 */
+	private void createArray() {
 		addOperation(OperationType.ARRAY_CREATION);
 	}
 

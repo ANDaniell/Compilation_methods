@@ -1,0 +1,17 @@
+int n, i, s;
+
+input(n);
+array a[n];
+s = n;
+
+while (i < s) {
+    input(a[i]);
+    i = i + 1;
+}
+
+i = 0;
+while (i < s) {
+    output(a[i]);
+    i = i + 1;
+}
+$

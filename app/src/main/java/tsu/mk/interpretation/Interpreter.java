@@ -119,8 +119,16 @@ public class Interpreter {
 	private void createArray() {
 		final int size = popInt();
 		final String name = popVariable();
-		if (!name.isBlank() && !arrays.containsKey(name)) malloc(name, size);
-		else error("An unexpected error in the array creation.");
+		if (name.isBlank() || arrays.containsKey(name)) {
+			error("An unexpected error in the array creation.");
+			return;
+		}
+		if (size <= 0) {
+			error("The array size must be a positive value.");
+			return;
+		}
+
+		malloc(name, size);
 	}
 	
 	private void createInt() {
