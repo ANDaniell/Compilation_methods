@@ -26,8 +26,11 @@ public final class Main {
 	private static void run(final String source) {
 		final Scanner scanner = new Scanner(source);
 		final List<Token> tokens = scanner.scanTokens();
+		if (hadError) return;
+
 		final Parser parser = new Parser(tokens);
 		final Notation notation = parser.parse();
+		if (hadError) return;
 		
 		final Interpreter interpreter = new Interpreter(notation.raw());
 		interpreter.run();
@@ -55,7 +58,7 @@ public final class Main {
 	}
 	
 	public static void main(String[] args) throws IOException {
-		final Path path = Path.of("tests", "test_1.txt");
+		final Path path = args.length > 0 ? Path.of(args[0]) : Path.of("tests", "test_1.txt");
 		runFile(path);
 	}
 }
