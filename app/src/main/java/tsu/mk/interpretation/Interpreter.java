@@ -1,9 +1,7 @@
 package tsu.mk.interpretation;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -12,6 +10,7 @@ import java.util.Deque;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.function.BiFunction;
 
 import tsu.mk.Main;
@@ -33,7 +32,7 @@ public class Interpreter {
 	private final Deque<NotationEntry> stack;
 	private final List<NotationEntry> entries;
 	private final Map<OperationType, Interpretation> interpretations;
-	private final BufferedReader reader;
+	private final Scanner reader;
 	private final BufferedWriter writer;
 	private int current;
 	
@@ -48,7 +47,7 @@ public class Interpreter {
 		this.stack = new ArrayDeque<>();
 		this.entries = entries;
 		this.interpretations = new LinkedHashMap<>();
-		this.reader = new BufferedReader(new InputStreamReader(System.in));
+		this.reader = new Scanner(System.in);
 		this.writer = new BufferedWriter(new OutputStreamWriter(System.out));
 		this.current = 0;
 		
@@ -103,12 +102,10 @@ public class Interpreter {
 	
 	private void input() {
 		final int address = popAddress();
-		try {
-			final int value = Integer.parseInt(reader.readLine());
+		if (reader.hasNextInt()) {
+			final int value = reader.nextInt();
 			modifyAt(address, value);
-		} catch (IOException e) {
-			error("An unexpected error in the input.");
-		}
+		} else error("An unexpected error in the input.");
 	}
 	
 	private void assign() {

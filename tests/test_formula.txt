@@ -1,0 +1,9 @@
+int a, b, c, result;
+
+input(a);
+input(b);
+input(c);
+
+result = (a + b) * c - a / b;
+output(result);
+$
